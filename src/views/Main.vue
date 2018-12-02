@@ -1,7 +1,9 @@
 <template>
     <div class="main-component">
         <ul>
-            <li v-for="participant in participants">{{participant.name}}: {{participant.level}}</li>
+            <li v-for="participant in participantsList">
+                {{participant.name}}: {{participant.level}}
+            </li>
         </ul>
         <input v-model="partName"/>
         <input v-model="partLevel"/>
@@ -16,18 +18,14 @@ export default {
     isValid() {
       return this.partName !== '' && this.partLevel !== '';
     },
+    participantsList() {
+      return this.$store.state.app.participants;
+    },
   },
   data() {
     return {
       partName: '',
       partLevel: '',
-      participants: [
-        { name: 'Grzegorz', level: 'beginner' },
-        { name: 'Tomasz', level: 'beginner' },
-        { name: 'Paweł', level: 'beginner' },
-        { name: 'Andżelika', level: 'beginner' },
-        { name: 'Eric', level: 'beginner' },
-      ],
     };
   },
   methods: {
@@ -36,9 +34,7 @@ export default {
         name: this.partName,
         level: this.partLevel,
       };
-      this.participants.push(part);
-      this.partName = '';
-      this.partLevel = '';
+      this.$store.commit('add-participant', part);
     },
   },
 };
